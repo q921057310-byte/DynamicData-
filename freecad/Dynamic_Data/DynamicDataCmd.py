@@ -303,7 +303,19 @@ class DynamicDataSettingsCommandClass(DynamicDataBaseCommandClass):
             self.setAttribute(QtCore.Qt.WA_DeleteOnClose, True)
             self.setAttribute(QtCore.Qt.WA_WindowPropagation, True)
             self.form = Gui.PySideUic.loadUi(uiPath + "/dynamicdataprefs.ui")
-            self.setWindowTitle(self.form.windowTitle()+" v."+__version__)
+            # --- 汉化代码开始 ---
+            self.setWindowTitle("DynamicData 设置 v" + __version__)
+            self.form.KeepToolbar.setText("保持工具栏激活")
+            self.form.CondensedToolbar.setText("紧凑型工具栏")
+            self.form.SupportViewObjectProperties.setText("支持视图对象属性")
+            self.form.AddToActiveContainer.setText("创建时添加到活动容器")
+            self.form.CheckForUpdates.setText("检查更新")
+            self.form.AddToFreeCADPreferences.setText("添加到 FreeCAD 首选项 (修改需重启)")
+            try:
+                self.form.label.setText("最近使用类型列表大小:")
+            except:
+                pass
+            # --- 汉化代码结束 ---
             self.setWindowIcon(QtGui.QIcon("Resources/icons/Settings.svg"))
             lay = QtGui.QVBoxLayout(self)
             lay.addWidget(self.form)
@@ -315,6 +327,7 @@ class DynamicDataSettingsCommandClass(DynamicDataBaseCommandClass):
             self.form.CheckForUpdates.setChecked(self.pg.GetBool('CheckForUpdates', True))
             self.form.AddToFreeCADPreferences.setChecked(self.pg.GetBool("AddToFreeCADPreferences",True))
             self.form.mruLength.setValue(self.pg.GetInt('mruLength', 5))
+            
 
         def closeEvent(self, event):
             self.pg.SetBool('KeepToolbar', self.form.KeepToolbar.isChecked())
@@ -331,9 +344,9 @@ class DynamicDataSettingsCommandClass(DynamicDataBaseCommandClass):
 
     def GetResources(self):
         return {'Pixmap'  : os.path.join( iconPath , 'Settings.svg'), # the name of an icon file available in the resources
-                'MenuText': "&Settings",
+                'MenuText': "设置 (&S)",
                 'Accel'   : "Ctrl+Shift+D,S",
-                'ToolTip' : "Workbench settings dialog"}
+                'ToolTip' : "打开 DynamicData 工作台设置对话框"}
 
     def Activated(self):
         dlg = self.DynamicDataSettingsDlg()
@@ -354,9 +367,9 @@ class DynamicDataCreateObjectCommandClass(DynamicDataBaseCommandClass):
 
     def GetResources(self):
         return {'Pixmap'  : os.path.join( iconPath , 'CreateObject.svg'),
-                'MenuText': "&Create Object",
+                'MenuText': "创建容器对象 (&C)",
                 'Accel'   : "Ctrl+Shift+D,C",
-                'ToolTip' : "Create the DynamicData object to contain the custom properties"}
+                'ToolTip' : "创建一个用于存储自定义属性的 DynamicData 容器对象"}
 
     def Activated(self):
         doc = FreeCAD.ActiveDocument
@@ -845,9 +858,9 @@ you can use Undo to revert all your changes to the selected object.
 
     def GetResources(self):
         return {'Pixmap'  : os.path.join( iconPath , 'DynamicDataCreateConfiguration.svg'),
-                'MenuText': "Create/Edit Con&figuration",
+                'MenuText': "创建/编辑配置 (&F)",
                 'Accel'   : "Ctrl+Shift+D,F",
-                'ToolTip' : "Create or edit an existing configuration in the selected object"}
+                'ToolTip' : "在选中对象中创建或编辑一套属性配置系统"}
 
     def __init__(self):
         self.props = []
@@ -979,9 +992,9 @@ class DynamicDataEditEnumerationCommandClass(DynamicDataBaseCommandClass):
 
     def GetResources(self):
         return {'Pixmap'  : os.path.join( iconPath , 'DynamicDataEditEnumerations.svg'),
-                'MenuText': "&Edit Enumerations",
+                'MenuText': "编辑枚举 (&E)",
                 'Accel'   : "Ctrl+Shift+D,E",
-                'ToolTip' : "Edit properties of type Enumeration in selected object"}
+                'ToolTip' : "编辑选中对象中的枚举（下拉列表）类型属性"}
 
     def __init__(self):
         self.props = []
@@ -1317,7 +1330,7 @@ class DynamicDataAddPropertyCommandClass(DynamicDataBaseCommandClass):
 
     def GetResources(self):
         return {'Pixmap'  : os.path.join( iconPath , 'AddProperty.svg'),
-                'MenuText': "&Add Property",
+                'MenuText': "添加属性 (&A)",
                 'Accel'   : "Ctrl+Shift+D,A",
                 'ToolTip' : "Add a custom property to the DynamicData object"}
 
@@ -1541,7 +1554,7 @@ class DynamicDataMoveToNewGroupCommandClass(DynamicDataBaseCommandClass):
 
     def GetResources(self):
         return {'Pixmap'  : os.path.join(iconPath , 'MoveToGroup.svg'),
-                'MenuText': "Move to new &group",
+                'MenuText': "移动到新组 (&G)",
                 'Accel'   : "Ctrl+Shift+D,G",
                 'ToolTip' : "Move dynamic properties to new group.\n\
 This effectively renames a group if you move all properties.\n\
@@ -1623,7 +1636,7 @@ class DynamicDataRenamePropertyCommandClass(DynamicDataBaseCommandClass):
 
     def GetResources(self):
         return {'Pixmap'  : os.path.join(iconPath , 'RenameProperty.svg'),
-                'MenuText': "Re&name Property",
+                'MenuText': "重命名属性 (&N)",
                 'Accel'   : "Ctrl+Shift+D,N",
                 'ToolTip' : "Rename a dynamic property"}
 
@@ -1732,7 +1745,7 @@ class DynamicDataRetyePropertyCommandClass(DynamicDataBaseCommandClass):
 
     def GetResources(self):
         return {'Pixmap'  : os.path.join(iconPath , 'RetypeProperty.svg'),
-                'MenuText': "Ret&ype Property",
+                'MenuText': "修改属性类型 (&Y)",
                 'Accel'   : "Ctrl+Shift+D,Y",
                 'ToolTip' : "Retype a dynamic property"}
 
@@ -1823,9 +1836,9 @@ class DynamicDataSetTooltipCommandClass(DynamicDataBaseCommandClass):
 
     def GetResources(self):
         return {'Pixmap'  : os.path.join(iconPath , 'SetTooltip.svg'),
-                'MenuText': "Se&t Tooltip",
+                'MenuText': "设置提示 (&T)",
                 'Accel'   : "Ctrl+Shift+D,T",
-                'ToolTip' : "Set the tooltip of a dynamic property"}
+                'ToolTip' : "设置该属性在属性栏中显示的解释性提示文字"}
 
     def getProperty(self,obj):
         props = self.getDynamicProperties(obj)
@@ -1898,9 +1911,9 @@ class DynamicDataRemovePropertyCommandClass(DynamicDataBaseCommandClass):
 
     def GetResources(self):
         return {'Pixmap'  : os.path.join( iconPath , 'RemoveProperty.svg'),
-                'MenuText': "&Remove Property",
+                'MenuText': "移除属性 (&R)",
                 'Accel'   : "Ctrl+Shift+D,R",
-                'ToolTip' : "Remove a custom property from the DynamicData object"}
+                'ToolTip' : "从对象中永久移除自定义的动态属性"}
 
     def getProperties(self,obj):
         """get all dynamic properties, and let user select the ones to remove in a dialog"""
@@ -1954,8 +1967,8 @@ class DynamicDataImportAliasesCommandClass(DynamicDataBaseCommandClass):
 
     def GetResources(self):
         return {'Pixmap'  : os.path.join( iconPath , 'ImportAliases.svg'),
-                'MenuText': "&Import Aliases",
-                'ToolTip' : "Import aliases from selected spreadsheet(s) into selected dd object"}
+                'MenuText': "导入表格别名 (&I)",
+                'ToolTip' : "从选中的电子表格中导入别名作为动态属性"}
 
     def getExpression(self, sheet, alias, aliases):
         """Get the expression if there is one, modify it, and return it, else None if there is no expression."""
@@ -2125,8 +2138,8 @@ class DynamicDataImportNamedConstraintsCommandClass(DynamicDataBaseCommandClass)
 
     def GetResources(self):
         return {'Pixmap'  : os.path.join( iconPath , 'ImportNamedConstraints.svg'),
-                'MenuText': "&Import Named Constraints",
-                'ToolTip' : "Import named constraints from selected sketch(es) into selected dd object"}
+                'MenuText': "导入命名约束 (&M)",
+                'ToolTip' : "从选中的草图中导入命名约束作为动态属性"}
 
     def getExpression(self, sketch, constraintName):
         """Check if sketch.Constraints.constraintName has an expression, if not return None"""
@@ -2986,8 +2999,8 @@ which cannot be bound by expression.\n""")
 
     def GetResources(self):
         return {'Pixmap'  : os.path.join( iconPath , 'CopyProperty.svg'),
-                'MenuText': "C&opy Property",
-                'ToolTip' : "Copy/Set property values between selected objects"}
+                'MenuText': "复制/绑定属性 (&O)",
+                'ToolTip' : "在不同对象之间复制数值或建立表达式绑定"}
 
 
     def Activated(self):
